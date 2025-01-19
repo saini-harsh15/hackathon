@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heatmap Optimization with AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+
+        .info-box {
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            background-color: #1abc9c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #16a085;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization"></script>
+
+    <script>
+        let map, heatmap;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 40.7128, lng: -74.0060 }, // Default to New York City
+                zoom: 13
+            });
+
+            // Example heatmap data (latitudes and longitudes of heat sources)
+            const heatmapData = [
+                { location: new google.maps.LatLng(40.712776, -74.005974), weight: 5 },
+                { location: new google.maps.LatLng(40.713776, -74.006974), weight: 3 },
+                { location: new google.maps.LatLng(40.714776, -74.007974), weight: 2 }
+            ];
+
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData,
+                map: map
+            });
+
+            // Example AI-suggested planting spots
+            const plantingSpots = [
+                { lat: 40.7125, lng: -74.0055 },
+                { lat: 40.7135, lng: -74.0065 },
+                { lat: 40.7145, lng: -74.0075 }
+            ];
+
+            plantingSpots.forEach(spot => {
+                new google.maps.Marker({
+                    position: spot,
+                    map: map,
+                    title: "Plant Trees Here"
+                });
+            });
+        }
+
+        function toggleHeatmap() {
+            heatmap.setMap(heatmap.getMap() ? null : map);
+        }
+    </script>
+</head>
+
+<body onload="initMap()">
+    <header>
+        <h1>Urban Heat Island Mitigation</h1>
+        <p>Using AI to Identify Optimal Tree Planting Locations</p>
+    </header>
+
+    <div id="map"></div>
+
+    <div class="info-box">
+        <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+        <p>The heatmap above displays urban heat intensity. The markers indicate suggested locations for tree planting,
+            identified using AI analysis to maximize cooling effects in the area.</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Urban Heat Island Mitigation Platform. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
